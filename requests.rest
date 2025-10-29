@@ -1,0 +1,8 @@
+### Test root endpoint
+GET http://localhost:3000
+
+### Get all contacts
+GET http://localhost:3000/contacts
+
+### Get single contact (replace with actual ID)
+GET http://localhost:3000/contacts/67a5b1c2d3e4f5a6b7c8d9e0
