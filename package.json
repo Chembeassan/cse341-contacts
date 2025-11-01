@@ -19,8 +19,10 @@
   "homepage": "https://github.com/Chembeassan/cse341-contacts#readme",
   "description": "",
   "dependencies": {
+    "dotenv": "^16.0.0",
     "express": "^4.18.2",
     "mongodb": "^6.0.0",
-    "dotenv": "^16.0.0"
+    "swagger-jsdoc": "^6.2.8",
+    "swagger-ui-express": "^5.0.1"
   }
 }

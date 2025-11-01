@@ -1,25 +1,33 @@
-require('dotenv').config();
 const express = require('express');
 const app = express();
+const mongodb = require('./db/connect');
+const bodyParser = require('body-parser');
+const swaggerConfig = require('./swagger');
+
 const port = process.env.PORT || 3000;
 
-// Middleware
-app.use(express.json());
+app
+  .use(bodyParser.json())
+  .use((req, res, next) => {
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader(
+      'Access-Control-Allow-Headers',
+      'Origin, X-Requested-With, Content-Type, Accept, Z-Key'
+    );
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+    next();
+  })
+  .use('/contacts', require('./routes/contacts')); // ✅ Directly use contacts routes
 
-// Routes
-app.use('/contacts', require('./routes/contacts'));
+// Initialize Swagger documentation
+swaggerConfig(app);
 
-// Basic route
-app.get('/', (req, res) => {
-  res.json({ 
-    message: 'Contacts API is running!',
-    endpoints: {
-      getAllContacts: 'GET /contacts',
-      getContactById: 'GET /contacts/:id'
-    }
-  });
-});
-
-app.listen(port, () => {
-  console.log(`🚀 Contacts API running on port ${port}`);
+mongodb.initDb((err) => {
+  if (err) {
+    console.log(err);
+  } else {
+    app.listen(port);
+    console.log(`🚀 Server is running on port ${port}`);
+    console.log(`📚 API Documentation: http://localhost:${port}/api-docs`);
+  }
 });
